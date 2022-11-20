@@ -1,0 +1,16 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"xdebug": {
+			"path_mapping": {
+				"/var/www/html/" : "/var/www/html/prestashop/versions/psdocker/src/"
+			},
+			"url" : "http://localhost:8081"
+		}
+	}
+}

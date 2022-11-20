@@ -1,0 +1,40 @@
+version: '3.3'
+services:
+  mysql:
+    image: mysql/mysql-server:5.7
+    restart: always
+    ports:
+      - 3307:3306
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=1
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWD}
+      - MYSQL_DATABASE=${DB_NAME}
+
+  prestashop:
+    build: ./prestashop
+    image: prestashop-1.7
+    container_name: prestashop-1.7
+    environment:
+      - DB_PREFIX=ps17_
+      - DB_SERVER=mysql
+      - DB_USER=${DB_USER}
+      - DB_PASSWD=${DB_PASSWD}
+      - DB_NAME=${DB_NAME}
+      - PS_INSTALL_AUTO=1
+      - PS_DOMAIN=${PS_DOMAIN}:8081
+      - PS_FOLDER_ADMIN=${PS_FOLDER_ADMIN}
+      - PS_FOLDER_INSTALL=installed_remove
+      - TZ="America/New_York"
+      - ADMIN_MAIL=${ADMIN_MAIL}
+      - ADMIN_PASSWD=${ADMIN_PASSWD}
+      - PS_LANGUAGE=${PS_LANGUAGE}
+      - PS_COUNTRY=${PS_COUNTRY}
+    depends_on:
+      - mysql
+    volumes:
+      - ./php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - ./php/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
+      - ./src:/var/www/html
+    ports:
+      - 8081:80
